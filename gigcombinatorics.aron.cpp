@@ -50,26 +50,28 @@ pair<int, int> find_ones(int start, int end, vector<int> array) {
 	return make_pair(a, b);
 }
 
-pair<int, int> find_twos(int start, int end, vector<int> array) {
+pair<pair<int, int>, int> find_twos(int start, int end, vector<int> array) {
 	int a = -1, b = end;
+	int num_twos = 0;
 
-	// find first one
+	// find first two
 	for (int i = start; i < end; i++) {
 		if (array[i] == 2) {
 			a = i;
+			num_twos = 1;
 			break;
 		}
 	}
 
-	// find last one
+	// find last non-consecutive two
 	for (int i = a + 1; i < end; i++) {
-		if (array[i] != 2) {
+		if (array[i] == 2) {
+			num_twos++;
 			b = i;
-			break;
 		}
 	}
 
-	return make_pair(a, b);
+	return make_pair(make_pair(a, b), num_twos);
 }
 
 pair<int, int> find_threes(int start, int end, vector<int> array) {
@@ -115,12 +117,13 @@ int main() {
 			break;
 		}
 		for (int j = ones.second; j < n; j++) {
-			pair<int, int> twos = find_twos(j, n, songs);
-			cout << "twos: " << twos.first << " " << twos.second << endl;
-			if (twos.first == -1) {
+			pair<pair<int, int>, int> twos = find_twos(j, n, songs);
+			pair<int, int> tworange = twos.first;
+			cout << "twos: " << twos.first.first << " " << twos.first.second << " " << twos.second << endl;
+			if (twos.first.first == -1) {
 				break;
 			}
-			for (int k = twos.second; k < n; k++) {
+			for (int k = tworange.second; k < n; k++) {
 				pair<int, int> threes = find_threes(k,n,songs);
 				cout << "threes: " << threes.first << " " << threes.second << endl;
 				if (threes.first == -1) {

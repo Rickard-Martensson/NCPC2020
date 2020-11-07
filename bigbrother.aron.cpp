@@ -15,5 +15,7 @@ int main(int argc, char **argv) {
 		floor.push_back(make_pair(x, y));
 	}
 
+	
+
 	return 0;
 }
